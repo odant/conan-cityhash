@@ -2,7 +2,7 @@
 # DmitriyVetutnev, ODANT 2020
 
 cmake_minimum_required(VERSION 3.0)
-set(CMAKE_USER_MAKE_RULES_OVERRIDE "c_as_cxx_extensions.cmake")
+set(CMAKE_USER_MAKE_RULES_OVERRIDE ${CMAKE_CURRENT_SOURCE_DIR}/c_as_cxx_extensions.cmake)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -15,6 +15,17 @@ if(UNIX)
                  CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
                  CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
         string(REPLACE "-O2" "-O3" ${flag_var} "${${flag_var}}")
+    endforeach()
+endif()
+
+option(MSVC_STATIC_RUNTIME OFF)
+if(MSVC AND MSVC_STATIC_RUNTIME)
+    foreach (flag_var
+                 CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE
+                 CMAKE_C_FLAGS_MINSIZEREL CMAKE_C_FLAGS_RELWITHDEBINFO
+                 CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+                 CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+        string(REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
     endforeach()
 endif()
 
@@ -84,6 +95,12 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(src)
 
 add_library(cityhash STATIC src/city.cc)
+set_target_properties(cityhash PROPERTIES PUBLIC_HEADER "src/city.h;src/citycrc.h")
+install(
+    TARGETS cityhash
+    LIBRARY DESTINATION lib
+    PUBLIC_HEADER DESTINATION include
+)
 
 option(WITH_UNIT_TESTS OFF)
 if(WITH_UNIT_TESTS)
