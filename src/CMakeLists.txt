@@ -99,6 +99,7 @@ set_target_properties(cityhash PROPERTIES PUBLIC_HEADER "src/city.h;src/citycrc.
 install(
     TARGETS cityhash
     LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
     PUBLIC_HEADER DESTINATION include
 )
 
