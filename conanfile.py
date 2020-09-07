@@ -54,6 +54,7 @@ class CityHashConan(ConanFile):
 
     def package(self):
         self.copy("FindCityHash.cmake", dst=".", keep_path=False)
+        self.copy("*/cityhash.pdb", dst="bin", keep_path=False)
 
     def package_id(self):
         self.info.options.with_unit_tests = "any"
