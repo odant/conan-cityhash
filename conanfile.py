@@ -7,7 +7,7 @@ from conans import ConanFile, CMake, tools
 
 class CityHashConan(ConanFile):
     name = "cityhash"
-    version = "1.1.1+0"
+    version = "1.1.1+1"
     license = "https://raw.githubusercontent.com/google/cityhash/master/COPYING"
     description = "CityHash, a family of hash functions for strings."
     url = "https://github.com/odant/conan-cityhash"
@@ -18,10 +18,12 @@ class CityHashConan(ConanFile):
         "arch": ["x86", "x86_64", "mips", "armv7"]
     }
     options = {
+        "fPIC": [True, False],
         "with_unit_tests": [True, False],
         "ninja": [True, False]
     }
     default_options = {
+        "fPIC": True,
         "with_unit_tests": False,
         "ninja": True
     }
@@ -29,6 +31,10 @@ class CityHashConan(ConanFile):
     exports_sources = "src/*", "CMakeLists.txt", "FindCityHash.cmake"
     no_copy_source = True
     build_policy = "missing"
+
+    def configure(self):
+        if self.settings.os == "Windows":
+            del self.options.fPIC
 
     def build_requiments(self):
         if self.options.ninja:
