@@ -7,7 +7,7 @@ from conans import ConanFile, CMake, tools
 
 class CityHashConan(ConanFile):
     name = "cityhash"
-    version = "1.1.1+1"
+    version = "1.1.1+2"
     license = "https://raw.githubusercontent.com/google/cityhash/master/COPYING"
     description = "CityHash, a family of hash functions for strings."
     url = "https://github.com/odant/conan-cityhash"
