@@ -36,14 +36,13 @@ class CityHashConan(ConanFile):
         if self.settings.os == "Windows":
             del self.options.fPIC
 
-    def build_requiments(self):
+    def build_requirements(self):
         if self.options.ninja:
-            self.build_requires("ninja/1.9.0")
+            self.build_requires("ninja/[>=1.9.0]")
 
     def build(self):
         build_type = "RelWithDebInfo" if self.settings.build_type == "Release" else "Debug"
-        gen = "Ninja" if self.options.ninja == True else None
-        cmake = CMake(self, build_type=build_type, generator=gen, msbuild_verbosity='normal')
+        cmake = CMake(self, build_type=build_type, msbuild_verbosity='normal')
         cmake.verbose = True
         if self.options.with_unit_tests:
             cmake.definitions["WITH_UNIT_TESTS"] = "ON"
