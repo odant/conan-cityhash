@@ -41,8 +41,7 @@ class CityHashConan(ConanFile):
             self.build_requires("ninja/[>=1.9.0]")
 
     def build(self):
-        build_type = "RelWithDebInfo" if self.settings.build_type == "Release" else "Debug"
-        cmake = CMake(self, build_type=build_type, msbuild_verbosity='normal')
+        cmake = CMake(self, msbuild_verbosity='normal')
         cmake.verbose = True
         if self.options.with_unit_tests:
             cmake.definitions["WITH_UNIT_TESTS"] = "ON"
